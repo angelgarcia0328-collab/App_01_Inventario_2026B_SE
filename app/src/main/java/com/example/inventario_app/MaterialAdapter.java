@@ -1,9 +1,12 @@
 package com.example.inventario_app;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +48,8 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.ViewHo
         holder.tvPrecio.setText(String.format(Locale.getDefault(), "$%.2f", m.getPrecio()));
         holder.tvCantidad.setText(String.valueOf(m.getCantidad()));
 
+        mostrarFotoEnImageView(holder.ivFoto, m.getRutaImagen());
+
         if (m.getCantidad() <= 0) {
             holder.cardMaterial.setCardBackgroundColor(Color.parseColor("#FFEBEE"));
             holder.cardMaterial.setStrokeColor(Color.parseColor("#D32F2F"));
@@ -67,6 +73,22 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.ViewHo
         holder.itemView.setOnClickListener(v -> listener.onMaterialClick(m, holder.getAdapterPosition()));
     }
 
+    public static void mostrarFotoEnImageView(ImageView imageView, String rutaImagen) {
+        if (rutaImagen != null && !rutaImagen.isEmpty()) {
+            File archivo = new File(rutaImagen);
+            if (archivo.exists()) {
+                Bitmap bitmap = BitmapFactory.decodeFile(archivo.getAbsolutePath());
+                if (bitmap != null) {
+                    imageView.setPadding(0, 0, 0, 0);
+                    imageView.setImageBitmap(bitmap);
+                    return;
+                }
+            }
+        }
+        imageView.setPadding(12, 12, 12, 12);
+        imageView.setImageResource(android.R.drawable.ic_menu_gallery);
+    }
+
     @Override
     public int getItemCount() {
         return listaMateriales.size();
@@ -74,11 +96,13 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         MaterialCardView cardMaterial;
+        ImageView ivFoto;
         TextView tvNombre, tvPrecio, tvCantidad, tvEstado;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cardMaterial = itemView.findViewById(R.id.cardMaterial);
+            ivFoto = itemView.findViewById(R.id.ivFoto);
             tvNombre = itemView.findViewById(R.id.tvNombre);
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
             tvCantidad = itemView.findViewById(R.id.tvCantidad);
