@@ -19,6 +19,17 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
+        <ImageView
+            android:id="@+id/ivFoto"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="12dp"
+            android:background="#ECEFF1"
+            android:contentDescription="Foto del material"
+            android:padding="6dp"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_gallery" />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
